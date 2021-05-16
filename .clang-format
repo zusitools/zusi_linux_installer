@@ -1,0 +1,10 @@
+﻿---
+BasedOnStyle: Google
+AllowShortBlocksOnASingleLine: 'false'
+AllowShortCaseLabelsOnASingleLine: 'false'
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+SortIncludes: 'false'
+StatementMacros: ['DEFINE_GetIIDForInterface', 'NOTIMPL']
+
+...
