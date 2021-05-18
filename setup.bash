@@ -11,6 +11,7 @@ scriptDir=$(dirname "$(readlink -f "$0")")
 
 setupPath=$1
 setupDir=$(dirname "$setupPath")
+stickRootDir=$(realpath "$setupDir/..")
 setupBasename=$(basename "$setupPath")
 
 cd "${setupDir}"
@@ -23,7 +24,7 @@ if ! echo "$setupWinPath" | grep -q ".:\\\\Vollversion\\\\"; then
   echo "(aktueller Pfad unter Wine: ${setupWinPath})." >&2
   echo >&2
   echo "Bitte 'wine winecfg' aufrufen und unter 'Drives' eine neue virtuelle Festplatte anlegen," >&2
-  echo "deren Pfad auf '${}' verweist. Danach dieses Skript neu starten." >&2
+  echo "deren Pfad auf '${stickRootDir}' verweist. Danach dieses Skript neu starten." >&2
   echo "(Nach Ende der Installation kann die virtuelle Festplatte wieder entfernt werden.)" >&2
   exit 1
 fi
