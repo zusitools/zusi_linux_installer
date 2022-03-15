@@ -65,7 +65,7 @@ std::u16string GetUsbSerial() {
   libusb_device_descriptor desc = {};
 
   libusb_init(NULL);
-  libusb_set_option(NULL, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_INFO);
+  libusb_set_debug(NULL, LIBUSB_LOG_LEVEL_INFO);
   ssize_t size = libusb_get_device_list(NULL, &list);
   for (int i = 0; i < size; i++) {
     const auto &dev = list[i];
