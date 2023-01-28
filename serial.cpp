@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 #include <algorithm>
-#include <iostream>
+#include <cstdio>
 
 // https://github.com/gregkh/usbutils/blob/master/sysfs.c
 
@@ -44,7 +44,7 @@ int read_sysfs_prop(char *buf, size_t size, char *sysfs_name,
 
   buf[0] = '\0';
   snprintf(path, sizeof(path), SYSFS_DEV_ATTR_PATH, sysfs_name, propname);
-  std::cerr << " - reading from " << path << "\n";
+  fprintf(stderr, " - reading from %s\n", path);
   fd = open(path, O_RDONLY);
 
   if (fd == -1)
@@ -71,26 +71,27 @@ std::u16string GetUsbSerial() {
     const auto &dev = list[i];
     libusb_get_device_descriptor(dev, &desc);
     libusb_get_device_descriptor(dev, &desc);
-    std::cerr << "device " << i << ": class "
-              << static_cast<uint32_t>(desc.bDeviceClass) << " manufacturer "
-              << static_cast<uint32_t>(desc.iManufacturer) << " product "
-              << static_cast<uint32_t>(desc.iProduct) << "\n";
+    fprintf(stderr, "device %d: class %d manufacturer %d product %d\n", i,
+            static_cast<uint32_t>(desc.bDeviceClass),
+            static_cast<uint32_t>(desc.iManufacturer),
+            static_cast<uint32_t>(desc.iProduct));
     for (int j = 0; j < desc.bNumConfigurations; ++j) {
-      std::cerr << " - configuration " << j << "\n";
+      fprintf(stderr, " - configuration %d\n", j);
       libusb_config_descriptor *config = {};
       if (libusb_get_config_descriptor(dev, j, &config) != 0) {
         continue;
       }
       for (int k = 0; k < config->bNumInterfaces; k++) {
         const auto &interface = config->interface[k];
-        std::cerr << "  - interface " << k << "\n";
+        fprintf(stderr, "  - interface %d\n", k);
         for (int l = 0; l < interface.num_altsetting; l++) {
-          std::cerr << "   - altsetting " << l << "\n";
+          fprintf(stderr, "   - altsetting %d\n", l);
           const auto &altsetting = interface.altsetting[l];
           if (altsetting.bInterfaceClass == LIBUSB_CLASS_MASS_STORAGE) {
             if (!result.empty()) {
-              std::cerr << "More than one USB mass storage device found, "
-                           "taking first one.\n";
+              fprintf(stderr,
+                      "More than one USB mass storage device found, taking "
+                      "first one.\n");
               continue;
             }
             char sysfs_name[1024];
@@ -113,7 +114,7 @@ std::u16string GetUsbSerial() {
   libusb_free_device_list(list, 1);
   libusb_exit(NULL);
   if (result.empty()) {
-    std::cerr << "No USB stick found.\n";
+    fprintf(stderr, "No USB stick found.\n");
   }
   return result;
 }

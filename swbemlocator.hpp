@@ -5,7 +5,6 @@
 #include "debug.hpp"
 
 #include <wbemdisp.h>
-#include <iostream>
 
 DEFINE_GetIIDForInterface(IDispatch)
 DEFINE_GetIIDForInterface(ISWbemLocator)

@@ -1,12 +1,13 @@
 #pragma once
 
 #include <string>
+#include <cstdio>
 
-#define NOTIMPL                                                           \
-  {                                                                       \
-    std::cerr << "Call to unimplemented function " << __PRETTY_FUNCTION__ \
-              << "\n";                                                    \
-    return E_NOTIMPL;                                                     \
+#define NOTIMPL                                            \
+  {                                                        \
+    fprintf(stderr, "Call to unimplemented function %s\n", \
+            __PRETTY_FUNCTION__);                          \
+    return E_NOTIMPL;                                      \
   }
 
 /**

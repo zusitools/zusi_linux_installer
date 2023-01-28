@@ -3,7 +3,6 @@
 #include "services.hpp"
 
 #include <wbemcli.h>
-#include <iostream>
 
 DEFINE_GetIIDForInterface(IWbemLocator)
 

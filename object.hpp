@@ -3,7 +3,6 @@
 #include "util.hpp"
 
 #include <wbemdisp.h>
-#include <iostream>
 
 #include <boost/smart_ptr/intrusive_ptr.hpp>
 
