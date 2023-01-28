@@ -9,7 +9,7 @@ add_library(wbemdisp SHARED
   serial.cpp
   )
 
-target_compile_definitions(wbemdisp PRIVATE -DUNICODE -DNOMINMAX -DWIN32_LEAN_AND_MEAN)
+target_compile_definitions(wbemdisp PRIVATE -DUNICODE -D_UNICODE -DNOMINMAX -DWIN32_LEAN_AND_MEAN)
 target_compile_options(wbemdisp PRIVATE -Wall -Wextra -Wno-pedantic -Werror -Wno-error=unused-function -Wno-error=deprecated-declarations -Wno-unused-parameter -fshort-wchar -munix)
 target_link_options(wbemdisp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/dllmain.spec)
 target_include_directories(wbemdisp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} /usr/include/libusb-1.0)

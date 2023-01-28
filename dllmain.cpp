@@ -62,10 +62,7 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppReturn) {
 
     return pClassFactory->QueryInterface(riid, ppReturn);
   }
-  (void)riid;
 
-#if 0
-#endif
   return CLASS_E_CLASSNOTAVAILABLE;
 }
 
