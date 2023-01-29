@@ -3,7 +3,7 @@ set -e
 set -o pipefail
 
 if [ $# -ne 1 ]; then
-  echo "Nutzung: setup.sh /pfad/zu/usb-stick/Vollversion/Setup_Zusi3_Hobby_XXXX-XX-XX.exe" >&2
+  echo "Nutzung: setup.bash /pfad/zu/usb-stick/Vollversion/Setup_Zusi3_Hobby_XXXX-XX-XX.exe" >&2
   exit 1
 fi
 
