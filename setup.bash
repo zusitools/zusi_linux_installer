@@ -19,7 +19,7 @@ cd "${setupDir}"
 # This is what we want, since the installer is a 32-bit application.
 wbemdispPath=$(wine winepath -u "C:\\Windows\\System32\\wbem\\wbemdisp.dll")
 wbemdispPathBackup=${wbemdispPath}.backup-$(date "+%Y%m%d")
-wbemdispReplacementPath="${scriptDir}/wbemdisp32.dll.so"
+wbemdispReplacementPath="${scriptDir}/wbemdisp.dll.so"
 
 echo "Bitte 'wine winecfg' aufrufen und unter 'Drives' eine neue virtuelle Festplatte mit folgenden Einstellungen anlegen:" >&2
 echo " - Path: <Pfad, an dem der Zusi-USB-Stick eingehängt ist>" >&2
