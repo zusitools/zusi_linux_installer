@@ -1,7 +1,8 @@
 #pragma once
 
-#include <boost/nowide/convert.hpp>
-#include <boost/nowide/stackstring.hpp>
+// TODO Boost.Nowide is not available in 1.67 (Debian Buster)
+// #include <boost/nowide/convert.hpp>
+// #include <boost/nowide/stackstring.hpp>
 
 #include <windows.h>
 

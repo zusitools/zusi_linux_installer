@@ -6,7 +6,6 @@
 
 #include "debug.hpp"
 
-#include <boost/nowide/stackstring.hpp>
 #include <boost/smart_ptr/intrusive_ptr.hpp>
 
 #include <olectl.h>

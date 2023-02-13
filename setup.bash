@@ -24,7 +24,8 @@ wbemdispReplacementPath="${scriptDir}/wbemdisp.dll.so"
 echo "Bitte 'wine winecfg' aufrufen und unter 'Drives' eine neue virtuelle Festplatte mit folgenden Einstellungen anlegen:" >&2
 echo " - Path: <Pfad, an dem der Zusi-USB-Stick eingehängt ist>" >&2
 echo " - Type: Floppy disk  [zum Anzeigen dieses Feldes auf \"Show Advanced\" klicken]." >&2
-echo "(Nach Ende der Installation kann die virtuelle Festplatte wieder entfernt werden.)" >&2
+echo "Auch dann, wenn Wine schon eine virtuelle Festplatte mit demselben \"Path\" angelegt hat!" >&2
+echo "Nach Ende der Installation kann die virtuelle Festplatte wieder entfernt werden." >&2
 echo >&2
 echo "Bitte mit Enter-Taste bestätigen, dass die Einstellungen so sind wie beschrieben." >&2
 read -r

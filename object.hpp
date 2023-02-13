@@ -45,7 +45,8 @@ class SWbemObject : public IUnknownImpl<IDispatch> {
     // DeviceID and PnpDeviceID are the only methods implemented.
     V_VT(pVarResult) = VT_BSTR;
     const auto &result = (dispIdMember == 42) ? _deviceId : _pnpDeviceId;
-    V_BSTR(pVarResult) = SysAllocStringLen(result.data(), result.size());
+    V_BSTR(pVarResult) = SysAllocStringLen(
+        reinterpret_cast<const OLECHAR *>(result.data()), result.size());
     return S_OK;
   }
 
