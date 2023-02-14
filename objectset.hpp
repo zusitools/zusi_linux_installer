@@ -8,6 +8,17 @@
 
 #include <boost/smart_ptr/intrusive_ptr.hpp>
 
+namespace {
+
+std::u16string PadSerial(std::u16string serial) {
+  if (serial.size() < 8) {
+    serial.insert(serial.size(), 8 - serial.size(), L'_');
+  }
+  return serial;
+}
+
+}  // namespace
+
 class SWbemObjectSet : public IUnknownImpl<IDispatch> {
  public:
   virtual HRESULT STDMETHODCALLTYPE
@@ -43,7 +54,7 @@ class SWbemObjectSet : public IUnknownImpl<IDispatch> {
     static std::u16string pnpDeviceId{
         std::u16string{
             u"USBSTOR\\Disk&Ven_Generic&Prod_Flash_Disk&Rev_8.07\\"} +
-        GetUsbSerial() + std::u16string{u"&0"}};
+        PadSerial(GetUsbSerial()) + std::u16string{u"&0"}};
     objects.reserve(26);
     for (char16_t driveLetter = u'A'; driveLetter <= u'Z'; ++driveLetter) {
       objects.push_back(
