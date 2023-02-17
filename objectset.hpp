@@ -8,12 +8,17 @@
 
 #include <boost/smart_ptr/intrusive_ptr.hpp>
 
+#include <algorithm>
+#include <string>
+
 namespace {
 
 std::u16string PadSerial(std::u16string serial) {
   if (serial.size() < 8) {
     serial.insert(serial.size(), 8 - serial.size(), L'_');
   }
+  std::replace(serial.begin(), serial.end(), static_cast<char16_t>(L' '),
+               static_cast<char16_t>(L'_'));
   return serial;
 }
 
