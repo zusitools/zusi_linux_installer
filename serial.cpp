@@ -73,10 +73,12 @@ std::u16string GetUsbSerial() {
     const auto &dev = list[i];
     libusb_get_device_descriptor(dev, &desc);
     libusb_get_device_descriptor(dev, &desc);
-    fprintf(stderr, "device %d: class %d manufacturer %d product %d\n", i,
+    fprintf(stderr, "device %d: class %d, manufacturer %d, product %d\n", i,
             static_cast<uint32_t>(desc.bDeviceClass),
             static_cast<uint32_t>(desc.iManufacturer),
             static_cast<uint32_t>(desc.iProduct));
+    fprintf(stderr, " - bus %d, device %d\n", libusb_get_bus_number(dev),
+            libusb_get_device_address(dev));
     for (int j = 0; j < desc.bNumConfigurations; ++j) {
       fprintf(stderr, " - configuration %d\n", j);
       libusb_config_descriptor *config = {};
