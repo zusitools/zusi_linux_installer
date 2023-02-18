@@ -1,5 +1,8 @@
 #pragma once
 
+#include <windows.h>
+#include <oleauto.h>
+
 #include <string>
 #include <cstdio>
 
@@ -14,13 +17,25 @@
  * BSTR to string, sufficient for our purposes since we only deal with ASCII
  * chars.
  */
-std::string CrudeBstrToString(BSTR src) {
+inline std::string CrudeBstrToString(BSTR src) {
   std::string result;
   if (src != nullptr) {
     while (*src) {
-      result += *(const char*)(src);
+      result += *(const char *)(src);
       ++src;
     }
   }
+  return result;
+}
+
+inline std::u16string NarrowToWideString(const std::string &source) {
+  std::u16string result(
+      // determine needed size
+      MultiByteToWideChar(CP_UTF8, 0, &source[0], (int)source.size(), nullptr,
+                          0),
+      0);
+  static_assert(sizeof(wchar_t) == sizeof(char16_t));
+  MultiByteToWideChar(CP_UTF8, 0, &source[0], (int)source.size(),
+                      reinterpret_cast<wchar_t *>(&result[0]), result.size());
   return result;
 }

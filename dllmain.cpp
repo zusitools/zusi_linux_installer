@@ -17,7 +17,7 @@
 #include <optional>
 #include <variant>
 
-static_assert(sizeof(wchar_t) == sizeof(char16_t));
+static_assert(sizeof(char16_t) == sizeof(char16_t));
 
 // data
 HINSTANCE g_hInst;

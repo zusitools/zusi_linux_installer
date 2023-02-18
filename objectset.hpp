@@ -57,9 +57,8 @@ class SWbemObjectSet : public IUnknownImpl<IDispatch> {
     // _NewEnum is the only implemented method.
     std::vector<boost::intrusive_ptr<SWbemObject>> objects;
     static std::u16string pnpDeviceId{
-        std::u16string{
-            u"USBSTOR\\Disk&Ven_Generic&Prod_Flash_Disk&Rev_8.07\\"} +
-        PadSerial(GetUsbSerial()) + std::u16string{u"&0"}};
+        u"USBSTOR\\Disk&Ven_Generic&Prod_Flash_Disk&Rev_8.07\\" +
+        PadSerial(GetUsbSerial()) + u"&0"};
     objects.reserve(26);
     for (char16_t driveLetter = u'A'; driveLetter <= u'Z'; ++driveLetter) {
       objects.push_back(

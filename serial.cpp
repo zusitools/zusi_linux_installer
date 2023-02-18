@@ -9,9 +9,6 @@
 
 #include <algorithm>
 #include <cstdio>
-#include <string>
-#include <locale>
-#include <codecvt>
 
 // https://github.com/gregkh/usbutils/blob/master/sysfs.c
 
@@ -105,10 +102,7 @@ std::u16string GetUsbSerial() {
                         "first one.\n");
                 continue;
               } else {
-                std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,
-                                     char16_t>
-                    convert;
-                result = convert.from_bytes(serial);
+                result = NarrowToWideString(serial);
               }
             }
           }

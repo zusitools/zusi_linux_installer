@@ -1,15 +1,10 @@
 #pragma once
 
-// TODO Boost.Nowide is not available in 1.67 (Debian Buster)
-// #include <boost/nowide/convert.hpp>
-// #include <boost/nowide/stackstring.hpp>
+#include "util.hpp"
 
 #include <windows.h>
 
 #include <sstream>
-#include <string>
-#include <locale>
-#include <codecvt>
 
 // https://stackoverflow.com/a/14422777
 #define STRINGIFY2(m) #m
@@ -21,10 +16,8 @@
       std::stringstream msg;                                              \
       msg << "[T " << GetCurrentThreadId() << "] " << __PRETTY_FUNCTION__ \
           << ":" STRINGIFY(__LINE__) ": " << args << "\r\n";              \
-      std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>   \
-          convert;                                                        \
       OutputDebugString(reinterpret_cast<const wchar_t *>(                \
-          convert.from_bytes(msg.str()).c_str()));                        \
+          NarrowToWideString(msg.str()).c_str()));                        \
     } while (0);                                                          \
   }
 
