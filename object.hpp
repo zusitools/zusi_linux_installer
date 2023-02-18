@@ -47,6 +47,10 @@ class SWbemObject : public IUnknownImpl<IDispatch> {
     const auto &result = (dispIdMember == 42) ? _deviceId : _pnpDeviceId;
     V_BSTR(pVarResult) = SysAllocStringLen(
         reinterpret_cast<const OLECHAR *>(result.data()), result.size());
+    if (dispIdMember == 43) {
+      OutputDebugString(
+          reinterpret_cast<const wchar_t *>(_pnpDeviceId.c_str()));
+    }
     return S_OK;
   }
 

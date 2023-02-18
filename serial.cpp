@@ -1,5 +1,7 @@
 #include "serial.hpp"
 
+#include "debug.hpp"
+
 #include <libusb.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -7,6 +9,9 @@
 
 #include <algorithm>
 #include <cstdio>
+#include <string>
+#include <locale>
+#include <codecvt>
 
 // https://github.com/gregkh/usbutils/blob/master/sysfs.c
 
@@ -88,22 +93,23 @@ std::u16string GetUsbSerial() {
           fprintf(stderr, "   - altsetting %d\n", l);
           const auto &altsetting = interface.altsetting[l];
           if (altsetting.bInterfaceClass == LIBUSB_CLASS_MASS_STORAGE) {
-            if (!result.empty()) {
-              fprintf(stderr,
-                      "More than one USB mass storage device found, taking "
-                      "first one.\n");
-              continue;
-            }
             char sysfs_name[1024];
             char serial[1024];
             if (get_sysfs_name(sysfs_name, sizeof(sysfs_name), dev) >= 0) {
               read_sysfs_prop(serial, sizeof(serial), sysfs_name, "serial");
 
-              // Crude, but works.
-              std::string tmp(serial);
-              result.reserve(tmp.size());
-              std::transform(tmp.begin(), tmp.end(), std::back_inserter(result),
-                             [](char c) { return static_cast<char16_t>(c); });
+              DEBUG(serial);
+              if (!result.empty()) {
+                fprintf(stderr,
+                        "More than one USB mass storage device found, taking "
+                        "first one.\n");
+                continue;
+              } else {
+                std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,
+                                     char16_t>
+                    convert;
+                result = convert.from_bytes(serial);
+              }
             }
           }
         }
