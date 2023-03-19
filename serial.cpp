@@ -97,7 +97,6 @@ std::u16string GetUsbSerial() {
             if (get_sysfs_name(sysfs_name, sizeof(sysfs_name), dev) >= 0) {
               read_sysfs_prop(serial, sizeof(serial), sysfs_name, "serial");
 
-              DEBUG(serial);
               if (!result.empty()) {
                 fprintf(stderr,
                         "More than one USB mass storage device found, taking "
