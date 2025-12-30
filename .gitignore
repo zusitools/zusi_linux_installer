@@ -1,4 +1,8 @@
 redist/
+i386-windows/
+i386-unix/
+x86_64-windows/
+x86_64-unix/
 
 # Created by http://gitignore.io
 

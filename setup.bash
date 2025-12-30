@@ -2,39 +2,19 @@
 set -e
 set -o pipefail
 
-if [ $# -ne 1 ]; then
-  echo "Nutzung: setup.bash /pfad/zu/usb-stick/Vollversion/Setup_Zusi3_Hobby_XXXX-XX-XX.exe" >&2
-  echo "oder: setup.bash /pfad/ZusiWebInstallerLauncher.exe" >&2
-  exit 1
-fi
+[ $# -eq 2 ] || (echo "Expected 2 arguments: 1) wine 2) Path to Zusi setup exe"; exit 1)
 
 scriptDir=$(dirname "$(readlink -f "$0")")
 
-setupPath=$1
-setupDir=$(dirname "$setupPath")
-setupBasename=$(basename "$setupPath")
+[ -f "${scriptDir}/i386-unix/zwbemdisp.so" ] || (echo "${scriptDir}/i386-unix/zwbemdisp.so not found"; exit 1)
+[ -f "${scriptDir}/i386-windows/zwbemdisp.dll" ] || (echo "${scriptDir}/i386-windows/zwbemdisp.dll not found"; exit 1)
+[ -f "${scriptDir}/x86_64-unix/zwbemdisp.so" ] || (echo "${scriptDir}/x86_64-unix/zwbemdisp.so not found"; exit 1)
+[ -f "${scriptDir}/x86_64-windows/zwbemdisp.dll" ] || (echo "${scriptDir}/x86_64-windows/zwbemdisp.dll not found"; exit 1)
+[ -f "${scriptDir}/i386-windows/zusi_linux_installer.exe" ] || (echo "${scriptDir}/i386-windows/zusi_linux_installer.exe not found"; exit 1)
 
-cd "${setupDir}"
-# Call "wine", not "wine64". This will redirect to C:\\Windows\\SysWoW64 on a 64-bit WINEPREFIX.
-# This is what we want, since the installer is a 32-bit application.
-wbemdispPath=$(wine winepath -u "C:\\Windows\\System32\\wbem\\wbemdisp.dll")
-wbemdispPathBackup=${wbemdispPath}.backup-$(date "+%Y%m%d")
-wbemdispReplacementPath="${scriptDir}/wbemdisp.dll.so"
-
-echo "Bitte 'wine winecfg' aufrufen und unter 'Drives' eine neue virtuelle Festplatte mit folgenden Einstellungen anlegen:" >&2
-echo " - Path: <Pfad, an dem der Zusi-USB-Stick eingehängt ist>" >&2
-echo " - Type: Floppy disk  [zum Anzeigen dieses Feldes auf \"Show Advanced\" klicken]." >&2
-echo "Auch dann, wenn Wine schon eine virtuelle Festplatte mit demselben \"Path\" angelegt hat!" >&2
-echo "Nach Ende der Installation kann die virtuelle Festplatte wieder entfernt werden." >&2
-echo >&2
-echo "Bitte mit Enter-Taste bestätigen, dass die Einstellungen so sind wie beschrieben." >&2
-read -r
-
-cp "${wbemdispPath}" "${wbemdispPathBackup}"
-function cleanup {
-  mv "${wbemdispPathBackup}" "${wbemdispPath}"
-}
-trap cleanup EXIT
-
-cp "${wbemdispReplacementPath}" "${wbemdispPath}"
-wine "${setupBasename}"
+# Only "built-in" DLLs can have a unixlib.
+# When loading a DLL (e.g. C:\Windows\System32\wbem\zwbemdisp.dll), Wine will normally search
+# for a corresponding DLL in /usr/lib/wine/i386-windows and .so in /usr/lib/wine/x86_64-unix
+# and load that instead.
+# Fortunately, we can extend the search path with our own folders using WINEDLLPATH.
+WINEDLLPATH=${scriptDir} "$1" "${scriptDir}/i386-windows/zusi_linux_installer.exe" $("$1" winepath -w "$2")
