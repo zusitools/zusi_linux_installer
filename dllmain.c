@@ -480,10 +480,12 @@ static HRESULT fill_pnp_device_id(void) {
     return E_FAIL;
   }
 
-  // Replace leading " " by "_".
+  // Replace " " by "_".
   char* tmp = buf;
-  while (*tmp == ' ') {
-    *tmp = '_';
+  while (*tmp != '\0') {
+    if (*tmp == ' ') {
+      *tmp = '_';
+    }
     ++tmp;
   }
 
